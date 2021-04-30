@@ -19,7 +19,7 @@ app.use(function(req, res, next) {
 });
 
 app.get('/', function (req, res) {
-    var path = __dirname + '/views/index.html';
+    var path = __dirname + '/index.html';
     console.log(path);
     res.sendFile(path);
 });
