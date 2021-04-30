@@ -2,11 +2,10 @@
   "name": "golf-mother",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-"scripts": {
-  "start": "node index.js"
-
-},
+  "main": "index.js", 
+  "scripts": {
+    "start": "node index.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://git.heroku.com/golf-totem.git"
