@@ -16,11 +16,21 @@ app.get("/", function (req, res) {
     res.send("<h1>I'm listening!</h1>")
 })
 
+
+
+
 setInterval(countdown, 60000)
 io.on('connection', (socket) => {
     console.log('Socket server initiated')
     console.log('Counting down')
     // receive/reset when video finished
+     
+    socket.on('test', (message) => {
+        io.emit("testReceived", {
+            message: 'got'
+        });
+    }
+    
 
     socket.on('resetTimer', (msg, active) => {
         working = true
