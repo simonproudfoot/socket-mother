@@ -29,7 +29,7 @@ io.on('connection', (socket) => {
         io.emit("testReceived", {
             message: 'got'
         });
-    }
+    })
     
 
     socket.on('resetTimer', (msg, active) => {
