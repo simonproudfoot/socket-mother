@@ -1,53 +1,41 @@
-const app = require("express")();
-const server = require("http").createServer(app);
-const io = require("socket.io")(server);
 
-var m = 2
-function countdown() {
-    var current = m--
-    // if (m >= 0) {
-    console.log(`Min: ${current}!`);
-    io.emit("oneSecond", {
-        minutes: current
+
+var express = require('express');
+var app = express();
+app.set('port', (process.env.PORT || 5000));
+
+var server = app.listen(app.get('port'), function() {
+    console.log('Node app is running on port', app.get('port'));
+});
+
+var io = require('socket.io')(server);
+
+app.use(express.static("./views"));
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+});
+
+app.get('/', function (req, res) {
+    var path = __dirname + '/views/index.html';
+    console.log(path);
+    res.sendFile(path);
+});
+
+io.on('connection', function(socket) {
+    socket.on('beep', function(){
+        socket.emit("beep", {data: 5});
+        console.log('beep recieved');
     });
-}
 
-app.get("/", function (req, res) {
-    res.send("<h1>I'm listening!</h1>")
-})
+    socket.on('change-speed', function(data) {
+        console.log('change speed recieved: ' + data);
+        socket.emit("speed", {newSpeed: data});
+    });
 
-
-
-
-setInterval(countdown, 60000)
-io.on('connection', (socket) => {
-    console.log('Socket server initiated')
-    console.log('Counting down')
-    // receive/reset when video finished
-     
-    socket.on('test', (message) => {
-        console.log('received')
-        io.emit("testReceived", {
-            message: 'got'
-        });
-    })
-    
-
-    socket.on('resetTimer', (msg, active) => {
-        working = true
-        console.log('Received reset')
-        clearInterval(countdown)
-        m = 3;
-        io.emit("oneSecond", {
-            minutes: m
-        });
-        // setTimeout(() => {
-        console.log('start again')
-        setInterval(countdown, 60000) // start again
-        working = false
-    })
-
-})
-
-
-app.listen(process.env.PORT || 3001,  () => console.log("Server is running..."+process.env.PORT));
+    socket.on('ios-connection', function(data) {
+        console.log('ios connection with message: ' + data);
+    });
+});
