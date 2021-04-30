@@ -26,6 +26,7 @@ io.on('connection', (socket) => {
     // receive/reset when video finished
      
     socket.on('test', (message) => {
+        console.log('received')
         io.emit("testReceived", {
             message: 'got'
         });
