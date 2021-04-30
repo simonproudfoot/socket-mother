@@ -5,7 +5,7 @@
   "main": "index.js",
 "scripts": {
   "start": "node index.js",
-  "build": "webpack" // This command will automatically run on deployment
+  "build": "webpack" 
 },
   "repository": {
     "type": "git",
